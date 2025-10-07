@@ -1,0 +1,7 @@
+# directories
+**/data
+
+# configs
+**/.env
+
+
