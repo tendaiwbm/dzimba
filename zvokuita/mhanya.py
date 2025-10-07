@@ -1,5 +1,20 @@
 import requests as r
+import json
+
+
+def run():
+    with open(config, "r") as sources: 
+        targets = json.load(sources)
+        
+        # sanganisa target yoga nemumushandi anoita zvese 
+        # achishandisa config yaanenge apuhwa
+
+        # isa dzimba dzose dzawanikwa panzvimbo imwe chete
+
+        # tumira
+
+        # KANA NDAZOFUNGA
+        # trigger remotely
 
 if __name__ == "__main__":
-    data = r.get("")
-    print(data.json())
+    run()
