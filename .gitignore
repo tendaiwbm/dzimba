@@ -1,7 +1,8 @@
 # directories
 **/data
+**/__pycache__
 
 # configs
 **/.env
-
+**/config.py
 
