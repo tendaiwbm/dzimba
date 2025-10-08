@@ -1,19 +1,16 @@
 import json
-
+from config import configDict
 
 def run():
-    with open(config, "r") as sources: 
-        targets = json.load(sources)
-        
-        # sanganisa target yoga nemumushandi anoita zvese 
-        # achishandisa config yaanenge apuhwa
+    # sanganisa target yoga nemumushandi anoita zvese 
+    # achishandisa config yaanenge apuhwa
 
-        # isa dzimba dzose dzawanikwa panzvimbo imwe chete
+    # isa dzimba dzose dzawanikwa panzvimbo imwe chete
 
-        # tumira
+    # tumira
 
-        # KANA NDAZOFUNGA
-        # trigger remotely
+    # KANA NDAZOFUNGA
+    # trigger remotely
 
 if __name__ == "__main__":
     run()
