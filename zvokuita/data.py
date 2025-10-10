@@ -4,7 +4,7 @@ import requests as rq
 import pandas as p
 import polars as bear
 from writers import write_json
-
+from mail import send_email
 
 def find_new_listing_ids(old,new,unique_id_column):
     updatedSet = p.CategoricalIndex(new[unique_id_column])
@@ -61,5 +61,5 @@ def pipeline(source):
     newListings = extract_new_listings(knownListings,updatedListings,source["model"].id_)
     knownListings = update_known_listings(knownListings,newListings)
     save_known_listings(knownListings,source["path"],source["localFileName"])
-
+    send_email("tackles and bruises")
 
