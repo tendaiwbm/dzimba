@@ -3,6 +3,24 @@ import json
 import requests as rq
 import pandas as p
 import polars as bear
+from writers import write_json
+
+
+def find_new_listing_ids(old,new,unique_id_column):
+    updatedSet = p.CategoricalIndex(new[unique_id_column])
+    previousSet = p.CategoricalIndex(old[unique_id_column])
+    return updatedSet.difference(previousSet)
+
+def extract_new_listings(old,new,unique_id_column):
+    newListingIds = find_new_listing_ids(old,new,unique_id_column)
+    newListings = new[new[unique_id_column].isin(newListingIds)]
+    return newListings
+
+def update_known_listings(old,new):
+    return p.concat([old,new])
+
+def save_known_listings(listings,path,filename):
+    write_json(listings,create_filepath(path,filename))     
 
 def create_filepath(path,filename):
     return "/".join([path,filename])
@@ -38,10 +56,10 @@ def create_url(domain,endpoint):
 def pipeline(source):
     url = create_url(source["domain"],source["endpoint"])
     response = request(url)
-    validatedResponse = validate(response,source["model"])
-    localFile = get_create_local_copy(source["path"],source["localFileName"],validatedResponse)
-    updatedSet = p.CategoricalIndex(validatedResponse[source["model"].id_])
-    previousSet = p.CategoricalIndex(localFile[source["model"].id_])
-    print(updatedSet)
-    print(previousSet)
-    print(updatedSet.difference(previousSet))
+    updatedListings = validate(response,source["model"])
+    knownListings = get_create_local_copy(source["path"],source["localFileName"],updatedListings)
+    newListings = extract_new_listings(knownListings,updatedListings,source["model"].id_)
+    knownListings = update_known_listings(knownListings,newListings)
+    save_known_listings(knownListings,source["path"],source["localFileName"])
+
+
