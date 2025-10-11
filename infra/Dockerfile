@@ -5,6 +5,7 @@ RUN apt-get update && \
     pip install pandas && \
     pip install polars && \
     pip install requests && \
+    pip install python-dotenv && \
     mkdir /app 
 
 ENTRYPOINT python3 /app/zvokuita/mhanya.py

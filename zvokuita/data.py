@@ -20,16 +20,16 @@ def update_known_listings(old,new):
     return p.concat([old,new])
 
 def save_known_listings(listings,path,filename):
-    write_json(listings,create_filepath(path,filename))     
+    write_json(listings,create_path([path,filename]))     
 
-def create_filepath(path,filename):
-    return "/".join([path,filename])
+def create_path(parts):
+    return "/".join(parts)
 
 def dict_rows_to_df(dict_rows):
     return p.DataFrame(dict_rows)
 
 def get_create_local_copy(path,filename,data):
-    filepath = create_filepath(path,filename)
+    filepath = create_path([path,filename])
     
     if filename in os.listdir(path):
         mode = "r"
@@ -50,11 +50,8 @@ def validate(data,model):
     validatedData = model.validate(data)
     return dict_rows_to_df(validatedData)
 
-def create_url(domain,endpoint):
-    return "/".join([domain,endpoint])
-
 def pipeline(source):
-    url = create_url(source["domain"],source["endpoint"])
+    url = create_path([source["domain"],source["endpoint"]])
     response = request(url)
     updatedListings = validate(response,source["model"])
     knownListings = get_create_local_copy(source["path"],source["localFileName"],updatedListings)
