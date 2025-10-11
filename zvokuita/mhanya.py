@@ -8,10 +8,6 @@ def run():
     for source in configDict.values():
         pipeline(source)
     
-    # isa dzimba dzose dzawanikwa panzvimbo imwe chete
-
-    # tumira
-
     # KANA NDAZOFUNGA
     # trigger remotely
 
