@@ -2,7 +2,6 @@ import os
 import json
 import requests as rq
 import pandas as p
-import polars as bear
 from writers import write_json
 import mail
 
@@ -33,15 +32,11 @@ def get_create_local_copy(path,filename,data):
     
     if filename in os.listdir(path):
         mode = "r"
-    else:
-        mode = "w"
-    
-    if mode == "w":
-        write_json(data,filepath)
-        return
-    else:
         with open(filepath,mode) as f:
             return dict_rows_to_df(json.load(f))
+    else:
+        mode = "w"
+        write_json(data,filepath)
 
 def request(url):
     return rq.get(url).json()
