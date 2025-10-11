@@ -36,12 +36,12 @@ def get_create_local_copy(path,filename,data):
     else:
         mode = "w"
     
-    with open(filepath,mode) as f:
-        if mode == "w":
-            jsonData = data.to_dict(orient="records")
-            json.dump(jsonData,f)
-            return 
-        return dict_rows_to_df(json.load(f))
+    if mode == "w":
+        write_json(data,filepath)
+        return
+    else:
+        with open(filepath,mode) as f:
+            return dict_rows_to_df(json.load(f))
 
 def request(url):
     return rq.get(url).json()
