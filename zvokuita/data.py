@@ -11,11 +11,20 @@ def find_new_listing_ids(old,new,unique_id_column):
     return updatedSet.difference(previousSet)
 
 def extract_new_listings(old,new,unique_id_column):
+    if isinstance(old,type(None)): return new
+
     newListingIds = find_new_listing_ids(old,new,unique_id_column)
+    
+    if newListingIds.empty: 
+        exit("No new listings matching search criteria found.")
+   
     newListings = new[new[unique_id_column].isin(newListingIds)]
+
     return newListings
 
 def update_known_listings(old,new):
+    if isinstance(old,type(None)): return new
+
     return p.concat([old,new])
 
 def save_known_listings(listings,path,filename):
