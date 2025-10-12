@@ -54,12 +54,49 @@ def validate(data,model):
     validatedData = model.validate(data)
     return dict_rows_to_df(validatedData)
 
+def apply_filters(data,filters,model):
+    print(f"Number of listings before filtering:\t{len(data)}")
+    message = "Number of listings after applying a filter on '{}':\t{}"
+
+    if "city" in filters:
+        data = data[data[model.city].isin(filters["city"])]
+        print(message.format("city",len(data)))
+    
+    if "isForRental" in filters:
+        data = data[data[model.forRental]]
+        print(message.format("isForRentalPrice",len(data)))
+        
+        if "rentalStatusNL" in filters:
+            data = data[data[model.status] == filters["rentalStatusNL"]]
+            print(message.format("rentalStatusNL",len(data)))
+
+        if "rentalStatusEN" in filters:
+            data = data[data[model.statusEN] == filters["rentalStatusEN"]]
+            print(message.format("rentalStatusEN",len(data)))
+        
+        if "rentalPrice" in filters:
+            data = data.loc[(data[model.rentalPrice] >= filters["rentalPrice"]["min"]) & 
+                            (data[model.rentalPrice] <= filters["rentalPrice"]["max"])]
+            print(message.format("rentalPrice",len(data)))
+     
+    if "energyLabel" in filters:
+        try: 
+            assert model.energyLabel in data.columns
+            data = data[data[model.energyLabel].isin(filters["energyLabel"])]
+            print(message.format("energyLabel",len(data)))
+        except:
+            pass
+            
+    return data
+
+
 def pipeline(source):
     url = create_path([source["domain"],source["endpoint"]])
     response = request(url)
-    updatedListings = validate(response,source["model"])
-    knownListings = get_create_local_copy(source["path"],source["localFileName"],updatedListings)
-    newListings = extract_new_listings(knownListings,updatedListings,source["model"].id_)
+    currentListings = validate(response,source["model"])
+    currentListings = apply_filters(currentListings,source["filters"],source["model"])
+    knownListings = get_create_local_copy(source["path"],source["localFileName"],currentListings)
+    newListings = extract_new_listings(knownListings,currentListings,source["model"].id_)
     knownListings = update_known_listings(knownListings,newListings)
     save_known_listings(knownListings,source["path"],source["localFileName"])
     payload = mail.prepare_data(newListings,source["domain"],source["model"].itemUrl)
