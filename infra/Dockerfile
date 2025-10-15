@@ -8,5 +8,5 @@ RUN apt-get update && \
     pip install python-dotenv && \
     mkdir /app 
 
-ENTRYPOINT python3 /app/zvokuita/mhanya.py
+ENTRYPOINT python3 /app/mhanya.py
 

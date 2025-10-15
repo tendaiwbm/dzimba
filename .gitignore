@@ -1,5 +1,6 @@
 # directories
-**/data
+**/verra
+**/househunting
 **/__pycache__
 
 # configs
