@@ -6,6 +6,7 @@ RUN apt-get update && \
     pip install polars && \
     pip install requests && \
     pip install python-dotenv && \
+    pip install beautifulsoup4 && \  
     mkdir /app 
 
 ENTRYPOINT python3 /app/mhanya.py

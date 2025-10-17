@@ -11,8 +11,9 @@ def prepare_data(listings,source_domain_url,path_column_name):
     listingsAsString = "\n".join(listingEndpoints)
     return listingsAsString
 
-def send_email(source,data):
-    message = f"""Subject: Apartments from {source} matching your criteria
+def send_email(pipeline_result):
+    data = prepare_data(*pipeline_result.values())
+    message = f"""Subject: Apartments from {list(pipeline_result.keys())[0]} matching your criteria
 Hello,
 
 Please see the listings below.
@@ -35,5 +36,9 @@ Ciao
     print(statusCode,response)
     statusCode, response = server.login(atumira,password)
     print(statusCode,response)
-    server.sendmail(atumira,atumirwa,message)
-    server.quit()
+    
+    try:
+        server.sendmail(atumira,atumirwa,message)
+        server.quit()
+    except:
+        return
