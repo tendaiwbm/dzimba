@@ -13,5 +13,5 @@ if [ "$container" != "$DZIMBA_CONTAINER_NAME" ]; then
 	sh createjob $DZIMBA_CONTAINER_NAME
 fi	
 
-docker start $DZIMBA_CONTAINER_NAME
+docker start -i $DZIMBA_CONTAINER_NAME
 echo "Tapedza basa.."
