@@ -10,7 +10,7 @@ class RAANLModel:
     id_ = "_id"
     itemUrl = "url"
     city = "city"
-    price = "price"
+    rentalPrice = "price"
     energyLabel = "energyLabel"
     
     def validate(data):

@@ -116,7 +116,7 @@ def request(url,params):
         dom = map(dom_article_to_json,dom)
         dom = filter(lambda listing: listing != None, dom)
 
-        time.sleep(3)
+        time.sleep(1)
 
         payload += dom
         params["skip"] += 12
@@ -135,31 +135,19 @@ def apply_filters(data,filters,model):
         data = data[data[model.city].isin(filters["city"])]
         print(message.format("city",len(data)))
     
-    if "isForRental" in filters:
-        data = data[data[model.forRental]]
-        print(message.format("isForRentalPrice",len(data)))
-        
-        if "rentalStatusNL" in filters:
-            data = data[data[model.status] == filters["rentalStatusNL"]]
-            print(message.format("rentalStatusNL",len(data)))
-
-        if "rentalStatusEN" in filters:
-            data = data[data[model.statusEN] == filters["rentalStatusEN"]]
-            print(message.format("rentalStatusEN",len(data)))
-        
-        if "rentalPrice" in filters:
-            data = data.loc[(data[model.rentalPrice] >= filters["rentalPrice"]["min"]) & 
-                            (data[model.rentalPrice] <= filters["rentalPrice"]["max"])]
-            print(message.format("rentalPrice",len(data)))
+    if "rentalPrice" in filters:
+        data = data[(data[model.rentalPrice] >= filters["rentalPrice"]["min"]) & 
+                    (data[model.rentalPrice] <= filters["rentalPrice"]["max"])]
+        print(message.format("rentalPrice",len(data)))
      
     if "energyLabel" in filters:
-        try: 
-            assert model.energyLabel in data.columns
+        try:
+            assert all(p.notna(data[model.energyLabel]))
             data = data[data[model.energyLabel].isin(filters["energyLabel"])]
             print(message.format("energyLabel",len(data)))
         except:
             pass
-            
+    
     return data
 
 
