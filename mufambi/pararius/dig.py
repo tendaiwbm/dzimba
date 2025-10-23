@@ -52,7 +52,7 @@ def get_create_local_copy(path,filename,data):
 def parse_node(node):
     return {
              "_id": "-".join(node["item"]["@id"].split("/")[-3:-1]),
-             "url": node["item"]["url"]
+             "url": node["item"]["url"].split("https://www.pararius.nl")[1]
            }
 
 def html_innertext_to_json(html):
