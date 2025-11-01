@@ -4,12 +4,10 @@ import requests as rq
 import pandas as p
 
 from bs4 import BeautifulSoup as BTSP
-from bs4.element import NavigableString
 
-from .model import HouseHuntingModel as model
+from .model import RentalRotterdamModel as model
 from .config import rentalRotterdamConfig as source
 from ..utils import *
-from ..mail import prepare_data, send_email
 from ..writers import write_json
 from ..readers import read_json
 
@@ -49,31 +47,22 @@ def get_create_local_copy(path,filename,data):
     else:
         write_json(data,filepath)
 
-def extract_unique_ids(listings,id_column_name,url_column_name):
-    def extract_id(listing,id_column_name,url_column_name):
-        listing[id_column_name] = listing[url_column_name].split("/")[-2]
-        return listing
-    
-    return list(map(lambda listing: extract_id(listing,id_column_name,url_column_name),listings))
-
 def dom_articles_to_json(dom):
     def dom_article_to_json(article):
         listingData = article.find_all(attrs={"class": "object__data"})[0]
         price = listingData.find_all(attrs={"class": "price"})[0].text.replace("€","").strip().split(",")[0]
-        
-
-        '''
+        identifier = listingData.find_all(attrs={"class":"object__address-container"})[0].attrs["href"].split("?")[0]
+    
         return {
-                 "_id": 1,
-                 "url": 1,
+                 "_id": "-".join(identifier.split("/")[-2:]),
+                 "url": identifier,
                  "price": int(price) if "." not in price else int(float(price)*1000),
-                 "city": 1,
-                 "energyLabel": 1
+                 "city": listingData.find_all(attrs={"class": "locality"})[0].text.strip(),
+                 "energyLabel": listingData.find_all(attrs={"class": "object_energyclass"})[0].text.strip()
                }
-        '''
 
     dom = BTSP(dom,"html.parser").find_all("article")
-    return list(map(dom_article_to_json,dom))
+    return map(dom_article_to_json,dom)
 
 def request(url,params,id_column_name,url_column_name,domain):
     try:
@@ -94,7 +83,7 @@ def request(url,params,id_column_name,url_column_name,domain):
         
         if not(pageFound): break
 
-        payload += [dom_articles_to_json(response)]
+        payload += dom_articles_to_json(response)
         params["skip"] += params["take"]
     
     return payload
@@ -110,13 +99,17 @@ def apply_filters(data,filters,model):
     if "city" in filters:
         data = data[data[model.city].isin(filters["city"])]
         print(message.format("city",len(data)))
+
+    if "energyLabel" in filters:
+        data = data[data[model.energyLabel].isin(filters["energyLabel"])]
+        print(message.format("energyLabel",len(data)))
+
     
     return data
 
 def pipeline():
     url = create_path([source["domain"],source["endpoint"]])
     response = request(url,source["requestParams"],model.id_,model.itemUrl,source["domain"])
-    exit()
     currentListings = validate(response,model)
     filteredListings = apply_filters(currentListings,source["filters"],model)
     knownListings = get_create_local_copy(source["path"],source["localFileName"],filteredListings)
