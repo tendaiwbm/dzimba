@@ -3,7 +3,6 @@
 
 # configs
 **/.env
-**/config.py
 
 # system files
 **/*.swp
