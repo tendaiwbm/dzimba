@@ -56,17 +56,20 @@ def parse_response(payload):
                  "url": create_path([listing["slug_city"],listing["slug_neighborhood"],listing["slug_street"]])
                }
 
-    return list(map(parse_listing,payload))
+    return map(parse_listing,payload)
 
 def request(url,params,headers):
-
+    
+    payload = []
     request = rq.post(url,data=json.dumps(params),headers=headers)
         
     try:    assert request.status_code == 200
     except: return payload
         
     response = request.json()
-    assert "hits" in response
+    
+    try: assert "hits" in response
+    except: return payload
     
     return response["hits"]
 
@@ -77,6 +80,10 @@ def validate(data,model):
 def pipeline():
     url = source["dataUrl"]
     payload = request(url,source["requestParams"],source["headers"])
+    
+    if not(payload):
+        return False
+
     response = parse_response(payload)
     currentListings = validate(response,model)
     knownListings = get_create_local_copy(source["path"],source["localFileName"],currentListings)
