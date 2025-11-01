@@ -3,6 +3,9 @@ import time
 import requests as rq
 import pandas as p
 
+from bs4 import BeautifulSoup as BTSP
+from bs4.element import NavigableString
+
 from .model import HouseHuntingModel as model
 from .config import rentalRotterdamConfig as source
 from ..utils import *
@@ -53,12 +56,24 @@ def extract_unique_ids(listings,id_column_name,url_column_name):
     
     return list(map(lambda listing: extract_id(listing,id_column_name,url_column_name),listings))
 
-def remove_url_domain(listings,url_column_name,domain):
-    def remove_domain(listing,url_column_name,domain):
-        listing[url_column_name] = listing[url_column_name].split(domain)[1]
-        return listing
+def dom_articles_to_json(dom):
+    def dom_article_to_json(article):
+        listingData = article.find_all(attrs={"class": "object__data"})[0]
+        price = listingData.find_all(attrs={"class": "price"})[0].text.replace("€","").strip().split(",")[0]
+        
 
-    return list(map(lambda listing: remove_domain(listing,url_column_name,domain),listings))
+        '''
+        return {
+                 "_id": 1,
+                 "url": 1,
+                 "price": int(price) if "." not in price else int(float(price)*1000),
+                 "city": 1,
+                 "energyLabel": 1
+               }
+        '''
+
+    dom = BTSP(dom,"html.parser").find_all("article")
+    return list(map(dom_article_to_json,dom))
 
 def request(url,params,id_column_name,url_column_name,domain):
     try:
@@ -70,23 +85,18 @@ def request(url,params,id_column_name,url_column_name,domain):
     payload = []
     while pageFound:
         request = rq.post(url,data=params)
-        print(url)
-        print(params)
-        response = request.text
-        print(response,request)
-        pageFound = False 
-        #pageFound = "posts" in response
-
-        #if not(pageFound): break
-
-        #time.sleep(3)
         
-        #payload += response["posts"]
+        try:    assert request.status_code == 200
+        except: break
+        
+        response = request.text
+        pageFound = "Geen objecten gevonden" not in str(response)
+        
+        if not(pageFound): break
+
+        payload += [dom_articles_to_json(response)]
         params["skip"] += params["take"]
     
-    #payload = extract_unique_ids(payload,id_column_name,url_column_name)
-    #payload = remove_url_domain(payload,url_column_name,domain)
-
     return payload
 
 def validate(data,model):
