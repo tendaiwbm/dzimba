@@ -6,7 +6,7 @@ import pandas as p
 
 from bs4 import BeautifulSoup as BTSP
 
-from .model import RentalRotterdamModel as model
+from .model import LIVResidentialModel as model
 from .config import LivResidentialConfig as source
 from ..utils import *
 from ..writers import write_json
@@ -52,7 +52,7 @@ def parse_response(payload):
     def parse_listing(listing):
         listing = listing["_formatted"]
         return {
-                 "_id": "-".join([listing["address_1"],listing["id"]]),
+                 "_id": "-".join([listing["address_1"].replace(",","").replace(" ","-").lower(),listing["id"]]),
                  "url": create_path([listing["slug_city"],listing["slug_neighborhood"],listing["slug_street"]])
                }
 
@@ -74,31 +74,13 @@ def validate(data,model):
     validatedData = model.validate(data)
     return dict_rows_to_df(validatedData)
 
-def apply_filters(data,filters,model):
-    print(f"Number of listings before filtering:\t{len(data)}")
-    message = "Number of listings after applying a filter on '{}':\t{}"
-
-    if "city" in filters:
-        data = data[data[model.city].isin(filters["city"])]
-        print(message.format("city",len(data)))
-
-    if "energyLabel" in filters:
-        data = data[data[model.energyLabel].isin(filters["energyLabel"])]
-        print(message.format("energyLabel",len(data)))
-
-    
-    return data
-
 def pipeline():
     url = source["dataUrl"]
-    response = request(url,source["requestParams"],source["headers"])
-    payload = parse_response(response)
-    print(payload)
-    exit()
+    payload = request(url,source["requestParams"],source["headers"])
+    response = parse_response(payload)
     currentListings = validate(response,model)
-    filteredListings = apply_filters(currentListings,source["filters"],model)
-    knownListings = get_create_local_copy(source["path"],source["localFileName"],filteredListings)
-    newListings = extract_new_listings(knownListings,filteredListings,model.id_)
+    knownListings = get_create_local_copy(source["path"],source["localFileName"],currentListings)
+    newListings = extract_new_listings(knownListings,currentListings,model.id_)
     
     try:
         assert newListings is not None
