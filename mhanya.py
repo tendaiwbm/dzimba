@@ -2,6 +2,8 @@ from mufambi.verra.dig import pipeline as verra
 from mufambi.househunting.dig import pipeline as househunting
 from mufambi.rentanapartmentnl.dig import pipeline as raanl
 from mufambi.pararius.dig import pipeline as pararius
+from mufambi.rentalrotterdam.dig import pipeline as rr
+
 from mufambi.mail import send_email
 
 def run():
@@ -13,6 +15,7 @@ def run():
                 househunting,
                 raanl,
                 pararius,
+                rr,
               )
     for trigger in sources:
         pipelineResult = trigger()
