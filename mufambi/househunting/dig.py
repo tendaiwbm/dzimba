@@ -72,17 +72,15 @@ def request(url,params,id_column_name,url_column_name,domain):
         request = rq.post(url,data=params)
         response = request.json()
         pageFound = "posts" in response
-
+        
         if not(pageFound): break
 
-        time.sleep(3)
-        
         payload += response["posts"]
         params["page"] += 1
     
     payload = extract_unique_ids(payload,id_column_name,url_column_name)
     payload = remove_url_domain(payload,url_column_name,domain)
-
+    
     return payload
 
 def validate(data,model):
@@ -102,6 +100,10 @@ def apply_filters(data,filters,model):
 def pipeline():
     url = create_path([source["domain"],source["endpoint"]])
     response = request(url,source["requestParams"],model.id_,model.itemUrl,source["domain"])
+    
+    if not(response):
+        return False
+
     currentListings = validate(response,model)
     filteredListings = apply_filters(currentListings,source["filters"],model)
     knownListings = get_create_local_copy(source["path"],source["localFileName"],filteredListings)
