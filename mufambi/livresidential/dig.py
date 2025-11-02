@@ -56,7 +56,7 @@ def parse_response(payload):
                  "url": create_path([listing["slug_city"],listing["slug_neighborhood"],listing["slug_street"]])
                }
 
-    return map(parse_listing,payload)
+    return list(map(parse_listing,payload))
 
 def request(url,params,headers):
     
@@ -80,7 +80,7 @@ def validate(data,model):
 def pipeline():
     url = source["dataUrl"]
     payload = request(url,source["requestParams"],source["headers"])
-    
+     
     if not(payload):
         return False
 
