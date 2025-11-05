@@ -19,7 +19,8 @@ LivResidentialConfig = {
                                                             "city=\"Amsterdam\"",
                                                             "city=\"Den Haag\"",
                                                             "city=\"Eindhoven\"",
-                                                            "city=\"Rotterdam\""
+                                                            "city=\"Rotterdam\"",
+                                                            "city=\"Utrecht\""
                                                           ],
                                                           "price>=700",
                                                           "price<=1500"
