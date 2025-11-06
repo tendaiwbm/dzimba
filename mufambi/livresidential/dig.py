@@ -42,7 +42,7 @@ def pipeline():
                       "source": source["name"],
                       "hostUrl": source["domain"],
                       "listingUrlColumn": model.itemUrl,
-                      "filter": False
+                      "filter": None
                     }
 
     worker = Pipeline(pipelineSetup)

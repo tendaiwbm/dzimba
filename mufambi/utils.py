@@ -27,8 +27,44 @@ class Pipeline:
         validatedData = self.config["model"].validate(data)
         return dict_rows_to_df(validatedData)
 
-    def apply_filters(self):
-        return
+    def apply_filters(self,data):
+        print(f"Number of listings before filtering:\t{len(data)}")
+        message = "Number of listings after applying a filter on '{}':\t{}"
+        filters = self.config["filter"]
+        model = self.config["model"]
+
+        if "city" in filters:
+            data = data[data[model.city].isin(filters["city"])]
+            print(message.format("city",len(data)))
+
+        if "isForRental" in filters:
+            data = data[data[model.forRental]]
+            print(message.format("isForRental",len(data)))
+
+        if "rentalStatusNL" in filters:
+            data = data[data[model.status] == filters["rentalStatusNL"]]
+            print(message.format("rentalStatusNL",len(data)))
+
+        if "rentalStatusEN" in filters:
+            data = data[data[model.statusEN] == filters["rentalStatusEN"]]
+            print(message.format("rentalStatusEN",len(data)))
+
+        if "rentalPrice" in filters:
+            data = data.loc[(data[model.rentalPrice] >= filters["rentalPrice"]["min"]) &
+                            (data[model.rentalPrice] <= filters["rentalPrice"]["max"])]
+            print(message.format("rentalPrice",len(data)))
+
+        if "energyLabel" in filters:
+            try:
+                assert model.energyLabel in data.columns
+                assert all(p.notna(data[model.energyLabel]))
+                data = data[(data[model.energyLabel] == None) | 
+                            (data[model.energyLabel].isin(filters["energyLabel"]))]
+                print(message.format("energyLabel",len(data)))
+            except:
+                pass
+
+        return data
 
     def get_create_local_copy(self,data):
         filepath = create_path([self.config["directory"],self.config["file"]])
@@ -71,13 +107,17 @@ class Pipeline:
         send_email(pipeline_result)
         
     def execute(self):
-        payload = self.request()
+        response = self.request()
 
-        if not(payload): return False
+        if not(response): return False
+        
+        if self.config["parser"]:
+            response = self.parse_payload(response)
+        
+        if not(response): return False
 
-        response = self.parse_payload(payload)
         currentListings = self.validate(response)
-
+        
         if self.config["filter"]:
             currentListings = self.apply_filters(currentListings)
 

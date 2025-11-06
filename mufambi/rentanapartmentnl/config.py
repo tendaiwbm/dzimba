@@ -10,7 +10,7 @@ raanlConfig = {
                            {
                              "city": ["Rotterdam","Delft","Den Haag","The Hague"],
                              "energyLabel": ["A++++","A+++","A++","A+","A","B","C"],
-                             "rentalPrice": {"min": 1000, "max": 2000}
+                             "rentalPrice": {"min": 800, "max": 1300}
                            },
                  "path": "/app/mufambi/rentanapartmentnl",
                  "localFileName": "raanl.json"

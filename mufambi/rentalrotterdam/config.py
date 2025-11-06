@@ -6,7 +6,7 @@ rentalRotterdamConfig = {
                                               "take": 14, 
                                               "availability": 1, 
                                               "pricerange.minprice": 800,
-                                              "pricerange.maxprice": 1800,
+                                              "pricerange.maxprice": 1400,
                                               "forsaleorrent": "FOR_RENT"
                                             },
                           "responseType": "html",
