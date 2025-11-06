@@ -24,7 +24,6 @@ def remove_url_domain(listings,url_column_name,domain):
 def parse_response(payload,id_column_name,url_column_name,domain):
     payload = extract_unique_ids(payload,id_column_name,url_column_name)
     payload = remove_url_domain(payload,url_column_name,domain)
-
     return list(payload)
 
 def request(url,params):
