@@ -57,7 +57,9 @@ class Pipeline:
         if "energyLabel" in filters:
             try:
                 assert model.energyLabel in data.columns
-                data = data[data[model.energyLabel].isin(filters["energyLabel"])]
+                assert all(p.notna(data[model.energyLabel]))
+                data = data[(data[model.energyLabel] == None) | 
+                            (data[model.energyLabel].isin(filters["energyLabel"]))]
                 print(message.format("energyLabel",len(data)))
             except:
                 pass
