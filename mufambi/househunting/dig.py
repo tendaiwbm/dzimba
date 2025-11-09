@@ -21,7 +21,7 @@ def remove_url_domain(listings,url_column_name,domain):
 
     return map(lambda listing: remove_domain(listing,url_column_name,domain),listings)
 
-def parse_response(payload,id_column_name,url_column_name,domain):
+def parse_response(payload,id_column_name=model.id_,url_column_name=model.itemUrl,domain=source["domain"]):
     payload = extract_unique_ids(payload,id_column_name,url_column_name)
     payload = remove_url_domain(payload,url_column_name,domain)
     return list(payload)
