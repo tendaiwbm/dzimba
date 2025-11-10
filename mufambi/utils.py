@@ -97,14 +97,18 @@ class Pipeline:
     def save_known_listings(self,listings):
         write_json(listings,create_path([self.config["directory"],self.config["file"]]))
 
-    def email(self,pipeline_result):
-        #assert isinstance(listings,p.DataFrame)
+    def prepare_email_payload(self,listings):
+        assert isinstance(listings,p.DataFrame)
 
-        #listings[path_column_name] = source_domain_url + listings[path_column_name]
-        #listingEndpoints = listings[path_column_name].tolist()
-        #formattedListings = "\n".join(listingEndpoints)
+        listings[self.config["listingUrlColumn"]] = self.config["hostUrl"] + listings[self.config["listingUrlColumn"]]
+        listingDetailUrls = listings[self.config["listingUrlColumn"]].tolist()
+        formattedListings = "\n".join(listingDetailUrls)
         
-        send_email(pipeline_result)
+        return formattedListings
+
+    def email(self,listings):
+        payload = self.prepare_email_payload(listings)
+        send_email(self.config["source"],payload)
         
     def execute(self):
         response = self.request()
@@ -130,4 +134,4 @@ class Pipeline:
         knownListings = self.update_known_listings(knownListings,newListings)
         self.save_known_listings(knownListings)
         
-        self.email({ self.config["source"]: newListings, "domain": self.config["hostUrl"], "endpoint": self.config["listingUrlColumn"] })
+        self.email(newListings)

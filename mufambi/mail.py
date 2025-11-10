@@ -6,16 +6,9 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-def prepare_data(listings,source_domain_url,path_column_name):
-    listings[path_column_name] = source_domain_url + listings[path_column_name]
-    listingEndpoints = listings[path_column_name].tolist()
-    listingsAsString = "\n".join(listingEndpoints)
-    return listingsAsString
-
-def send_email(pipeline_result):
-    data = prepare_data(*pipeline_result.values())
+def send_email(source,data):
     
-    subject = f"NEW - {list(pipeline_result.keys())[0]}"
+    subject = f"NEW - {source}"
     body = f"""
 Hello,
 
