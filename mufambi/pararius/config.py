@@ -3,9 +3,9 @@ parariusConfig = {
                    "domain": "https://www.pararius.nl",
                    "endpoint": "huurwoningen",
                    "filters": {
-                                "rentalPrice": { "min": 850, "max": 1500 },
+                                "rentalPrice": { "min": 800, "max": 1500 },
                                 "datePosted": "sinds-1",
-                                "city": ["Amsterdam","Eindhoven","Den Haag","Rotterdam","Utrecht"]
+                                "city": ["Amsterdam","Eindhoven","Tilburg","Den Bosch","Dordrecht","Den Haag","Rotterdam","Utrecht","Hoofddorp"]
                               },
                    "responseType": "html",
                    "requestParams": {
