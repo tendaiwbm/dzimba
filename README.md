@@ -11,7 +11,7 @@
 	    <li><a href="https://woonzeker.com/" target="_blank">Woonzeker</a></li>
     </ol> 
 </p>
-<br>
+<hr>
 <h2>Requirements</h2>
 <ul>
 	<li>Ubuntu 22.04 or any other Linux system with Cron</li>
