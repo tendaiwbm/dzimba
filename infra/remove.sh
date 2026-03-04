@@ -1,5 +1,2 @@
-#!/bin/bash
-
-docker rm $2
-docker rmi $1
-
+docker rm $DZIMBA_CONTAINER_NAME
+docker rmi $DZIMBA_IMAGE_NAME
