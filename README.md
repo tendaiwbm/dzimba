@@ -14,9 +14,22 @@
 <hr>
 <h2>Requirements</h2>
 <ul>
-	<li>Ubuntu 22.04 or any other Linux system with Cron</li>
+	<li>Ubuntu 22.04 or any other Unix-like operating system with Cron</li>
 	<li>Docker</li>
 </ul>
+<hr>
+<h2>Installation and Usage</h2>
+Clone the repository. 
+'''bash
+git clone https://github.com/tendaiwbm/dzimba.git <directory>
+'''
+Step into the directory containing the cloned repository.
+'''bash
+cd <directory>
+'''
+
+
+
 
 
 
