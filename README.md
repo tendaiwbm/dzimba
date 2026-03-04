@@ -19,6 +19,7 @@
 </ul>
 <hr>
 <h2>Installation and Usage</h2>
+
 1. Clone the repository. 
 
 ```bash
@@ -34,14 +35,14 @@ cd <directory>
 ```bash
 <directory>/mufambi/.env
 ```
-add the following environment variables (and values)
-```bash
-sender_email_address=<ndiani@uyu.com>
-sender_email_password=<password>
-recipient_email_address=<ndiani@uyo.com>
-smtp_server=<smtp_server_address>
-smtp_port=<smtp_port_number>
-```
+   add the following environment variables (and values)
+   ```bash
+   sender_email_address=<ndiani@uyu.com>
+   sender_email_password=<password>
+   recipient_email_address=<ndiani@uyo.com>
+   smtp_server=<smtp_server_address>
+   smtp_port=<smtp_port_number>
+   ```
 
 
 
