@@ -1,6 +1,6 @@
 <h1>About Dzimba</h1>
 <p>
-	Dzimba is a bot to search select Dutch housing websites for listings matching defined criteria, apply user-defined filters, and send email alerts, all in near-real time. Currently, the following platforms are scraped:
+	Dzimba is a bot to search select Dutch housing websites for listing, applying user-defined filters, and sending email alerts, all in near-real time. Currently, the following platforms are scraped:
 	<ol>
 	    <li><a href="https://www.verra.nl/" target="_blank">Verra Makelaars</a></li>
 	    <li><a href="https://househunting.nl/" target="_blank">HouseHunting</a></li>
