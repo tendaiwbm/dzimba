@@ -1,4 +1,56 @@
-<h1>About Dzimba</h1>
+<h2>About Dzimba</h2>
 <p>
-	Dzimba is a bot to search select Dutch housing websites for listings matching defined criteria.<br/>
+	Dzimba is a bot to search select Dutch housing websites for the latest apartment listings, apply user-defined filters, and send email alerts, all in near-real time. Currently, the following platforms are scraped:
+	<ol>
+	    <li><a href="https://www.verra.nl/" target="_blank">Verra Makelaars</a></li>
+	    <li><a href="https://househunting.nl/" target="_blank">HouseHunting</a></li>
+	    <li><a href="https://www.rentanapartment.nl/" target="_blank">Rent An Apartment NL</a></li>
+	    <li><a href="https://www.pararius.com/english" target="_blank">Pararius</a></li>
+	    <li><a href="https://www.rentalrotterdam.nl/" target="_blank">Rental Rotterdam</a></li>
+	    <li><a href="https://livresidential.nl/" target="_blank">LIV Residential</a></li>
+	    <li><a href="https://woonzeker.com/" target="_blank">Woonzeker</a></li>
+    </ol> 
 </p>
+
+
+<h2>Requirements</h2>
+<ul>
+	<li>Ubuntu 22.04 or any other Unix-like operating system with Cron</li>
+	<li>Docker</li>
+</ul>
+
+
+<h2>Installation and Usage</h2>
+
+1. Clone the repository. 
+
+```bash
+git clone https://github.com/tendaiwbm/dzimba.git <directory>
+```
+
+2. Step into the directory containing the cloned repository.
+```bash
+cd <directory>
+```
+
+3. In the following path:
+```bash
+<directory>/mufambi/.env
+```
+   add the following environment variables (and values)
+   ```bash
+   sender_email_address=<ndiani@uyu.com>
+   sender_email_password=<password>
+   recipient_email_address=<ndiani@uyo.com>
+   smtp_server=<smtp_server_address>
+   smtp_port=<smtp_port_number>
+   ```
+
+4. Run the following command to set up a job that will run periodically (every 5 mins) to search, filter, and send alerts.
+```bash
+source dzimba.sh
+```
+
+
+
+
