@@ -1,6 +1,8 @@
 #!/bin/bash
 
 container=`docker ps -a | awk '/house_finder/ {print $NF}'`
+echo $container
+echo "container name retrieved"
 if [ "$container" != "$DZIMBA_CONTAINER_NAME" ]; then
 	echo "No existing container found."
 	echo "Creating container.."
@@ -10,7 +12,7 @@ if [ "$container" != "$DZIMBA_CONTAINER_NAME" ]; then
 	cd ..
 	
 	echo "Adding cron job.."
-	sh createjob $DZIMBA_CONTAINER_NAME
+	sh install_cron.sh $DZIMBA_CONTAINER_NAME
 fi	
 
 docker start -i $DZIMBA_CONTAINER_NAME
