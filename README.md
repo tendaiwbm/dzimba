@@ -11,13 +11,15 @@
 	    <li><a href="https://woonzeker.com/" target="_blank">Woonzeker</a></li>
     </ol> 
 </p>
-<hr>
+
+
 <h2>Requirements</h2>
 <ul>
 	<li>Ubuntu 22.04 or any other Unix-like operating system with Cron</li>
 	<li>Docker</li>
 </ul>
-<hr>
+
+
 <h2>Installation and Usage</h2>
 
 1. Clone the repository. 
@@ -31,7 +33,7 @@ git clone https://github.com/tendaiwbm/dzimba.git <directory>
 cd <directory>
 ```
 
-3. In the following path
+3. In the following path:
 ```bash
 <directory>/mufambi/.env
 ```
@@ -44,8 +46,10 @@ cd <directory>
    smtp_port=<smtp_port_number>
    ```
 
-
-
+4. Run the following command to set up a job that will run periodically (every 5 mins) to search, filter, and send alerts.
+```bash
+source dzimba.sh
+```
 
 
 
