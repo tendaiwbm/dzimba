@@ -1,5 +1,9 @@
 #!/bin/bash
 
+cd infra
+source setup-env-vars.sh
+cd ..
+
 container=`docker ps -a | awk '/house_finder/ {print $NF}'`
 
 if [ "$container" != "$DZIMBA_CONTAINER_NAME" ]; then
