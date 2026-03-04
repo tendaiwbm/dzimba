@@ -20,15 +20,14 @@
 <hr>
 <h2>Installation and Usage</h2>
 Clone the repository. 
-
-'''bash
+```bash
 git clone https://github.com/tendaiwbm/dzimba.git <directory>
-'''
+```
 
 Step into the directory containing the cloned repository.
-'''bash
+```bash
 cd <directory>
-'''
+```
 
 
 
