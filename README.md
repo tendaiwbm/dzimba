@@ -19,14 +19,28 @@
 </ul>
 <hr>
 <h2>Installation and Usage</h2>
-Clone the repository. 
+1. Clone the repository. 
+
 ```bash
 git clone https://github.com/tendaiwbm/dzimba.git <directory>
 ```
 
-Step into the directory containing the cloned repository.
+2. Step into the directory containing the cloned repository.
 ```bash
 cd <directory>
+```
+
+3. In the following path
+```bash
+<directory>/mufambi/.env
+```
+add the following environment variables (and values)
+```bash
+sender_email_address=<ndiani@uyu.com>
+sender_email_password=<password>
+recipient_email_address=<ndiani@uyo.com>
+smtp_server=<smtp_server_address>
+smtp_port=<smtp_port_number>
 ```
 
 
