@@ -12,13 +12,14 @@ def dom_articles_to_json(dom):
         listingData = article.find_all(attrs={"class": "object__data"})[0]
         price = listingData.find_all(attrs={"class": "price"})[0].text.replace("€","").strip().split(",")[0]
         identifier = listingData.find_all(attrs={"class":"object__address-container"})[0].attrs["href"].split("?")[0]
-    
+        energyLabel = listingData.find_all(attrs={"class": "object_energyclass"}) 
+
         return {
                  "_id": "-".join(identifier.split("/")[-2:]),
                  "url": identifier,
                  "price": int(price) if "." not in price else int(float(price)*1000),
                  "city": listingData.find_all(attrs={"class": "locality"})[0].text.strip(),
-                 "energyLabel": listingData.find_all(attrs={"class": "object_energyclass"})[0].text.strip()
+                 "energyLabel": energyLabel[0].text.strip() if energyLabel else None 
                }
 
     dom = BTSP(dom,"html.parser").find_all("article")
