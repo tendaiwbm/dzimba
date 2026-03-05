@@ -1,9 +1,14 @@
-# remove existing cron
-# code comes here
+# temporary file to store current tabs
+temp_file="current_tabs"
+touch $temp_file
 
-touch current_tabs.txt
-crontab -l > current_tabs.txt
-echo "DZIMBA_CONTAINER_NAME=$DZIMBA_CONTAINER_NAME" >> current_tabs.txt
-echo "0-59/5 * * * * docker start -i $DZIMBA_CONTAINER_NAME >> $PWD/logs.txt 2>&1" >> current_tabs.txt
-crontab current_tabs.txt
-rm current_tabs.txt
+# remove any lines in the cron table
+# related to this project
+crontab -l | awk -v prefix="$DZIMBA_CONTAINER_NAME" '$0 !~ prefix {print}' > $temp_file
+
+# add new job to temp file
+# set new file as new cron table
+# remove temporary file
+echo "0-59/5 * * * * docker start -i $DZIMBA_CONTAINER_NAME >> $PWD/logs.txt 2>&1" >> $temp_file
+crontab $temp_file
+rm $temp_file
