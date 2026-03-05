@@ -14,7 +14,7 @@ cd $task_dir
 touch $bashrc1
 touch $bashrc2
 cat ~/.bashrc > $bashrc1
-cp $bashrc1 ..
+cp $bashrc1 ~/$bashrc1
 
 # replace existing/put in place project variables
 awk '$0 !~ /DZIMBA/{print}' $bashrc1 >> $bashrc2
