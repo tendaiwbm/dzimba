@@ -1,5 +1,6 @@
-# directories
+# python directories
 **/__pycache__
+**/.idea
 
 # configs
 **/.env
@@ -7,4 +8,5 @@
 # system files
 **/*.swp
 
-
+## other app files
+**/logs
