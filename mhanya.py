@@ -6,8 +6,6 @@ from mufambi.rentalrotterdam.dig import pipeline as rr
 from mufambi.livresidential.dig import pipeline as liv
 from mufambi.woonzeker.dig import pipeline as wzk
 
-from mufambi.mail import send_email
-
 def run():
     sources = (
                 verra,
@@ -20,7 +18,7 @@ def run():
               )
     
     for trigger in sources:
-        pipelineResult = trigger()
+        trigger()
 
 if __name__ == "__main__":
     run()
