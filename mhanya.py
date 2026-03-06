@@ -9,9 +9,6 @@ from mufambi.woonzeker.dig import pipeline as wzk
 from mufambi.mail import send_email
 
 def run():
-    # sanganisa target yoga nemumushandi anoita zvese 
-    # achishandisa config yaanenge apuhwa
-    listings = []
     sources = (
                 verra,
                 househunting,
@@ -21,16 +18,9 @@ def run():
                 liv,
                 wzk,
               )
+    
     for trigger in sources:
         pipelineResult = trigger()
-        if pipelineResult:
-            listings.append(pipelineResult)
-
-    if listings:
-        list(map(send_email,listings))
-
-    # KANA NDAZOFUNGA
-    # trigger remotely
 
 if __name__ == "__main__":
     run()
