@@ -15,7 +15,7 @@
 
 <h2>Requirements</h2>
 <ul>
-	<li>Ubuntu 22.04 or any other Unix-like operating system with Cron</li>
+	<li>Ubuntu 22.04</li>
 	<li>Docker</li>
 </ul>
 
