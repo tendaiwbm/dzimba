@@ -25,6 +25,7 @@ for line in `cat ../.env`;
 do
 	echo "export $line" >> $bashrc2 	
 done
+echo -e "\n" >> $bashrc2
 
 mv $bashrc2 ~/.bashrc
 source ~/.bashrc
@@ -33,5 +34,3 @@ source ~/.bashrc
 echo "Cleaning up.."
 cd ..
 rm -rf $task_dir
-
-echo "Tapedza basa!"
