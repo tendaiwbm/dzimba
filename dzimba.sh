@@ -3,38 +3,41 @@
 #                                                      #
 #  This is an installation script for the Dzimba app.  #
 #                                                      #
-#  If no  existing docker container for this project   #
-#  is found, the following happens                     #
-#  1. Adding the project environment variables         #
-#     to ~./bashrc.                                    #
-#  2. A clean docker image build and container setup.  #
-#  3. Installation of a cron job that runs             #
-#     the Dzimba bot.                                  #
-#                                                      #
 #               Author: Tendai Mbwanda                 #
 #             Email: tmbwanda52@gmail.com              #
 #======================================================#
 
-container=`docker ps -a | awk '/house_finder/ {print $NF}'`
+INFRA_DIR=infra
 
-if [ "$container" != "$DZIMBA_CONTAINER_NAME" ]; then
-	echo "Container rashaikwa.."
-	
+if [ -z "${DZIMBA_VARIABLES_INSTALLED}" ]; then
 	echo "Setting up environment variables.."
-	cd infra
+	
+	cd $INFRA_DIR
 	source setup-vars.sh
-	
-	echo "Image ne container zvakugadzigwa.."
-	./setup-env.sh
-	
-	echo "Finished creating image & container.."
-	
+	cd ..
+fi
+
+job=`crontab -l | awk -v string="$DZIMBA_CONTAINER_NAME" '$0 ~ string {print}'`
+container=`docker ps -a | awk -v string="$DZIMBA_CONTAINER_NAME" '$0 ~ string {print $NF}'`
+
+if [ -z "${job}" ]; then
+	cd $INFRA_DIR
+
+	if [ -z "$container" ]; then
+		echo "Container rashaikwa.."
+		
+		echo "Image ne container zvakugadzigwa.."
+		./setup-env.sh
+		
+		echo "Mufananidzo ne container zvavepo.."
+	else
+		echo "Docker container riripo nechekare.."
+	fi
+
 	echo "Adding cron job.."
 	sh setup-job.sh
-
+	
 	cd ..
-else
-	echo "Setup skipped, docker container riripo nechekare.."
 fi	
 
 echo "Tapedza basa!"
