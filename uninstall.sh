@@ -2,8 +2,7 @@
 echo "Uninstalling dzimba.."
 
 INFRA_DIR=infra
-TEMP_DIR=uninstall-temp
-TEMP_BASHRC=bashrc_temp
+TEMP_PURGE_DIR=uninstall-temp
 
 echo "Switching to '${INFRA_DIR}' directory.."
 cd $INFRA_DIR
@@ -16,16 +15,12 @@ echo "Purging docker infra.."
 ./drop-cron.sh
 
 echo "Creating temp directory.."
-mkdir $TEMP_DIR && cd $_
+mkdir $TEMP_PURGE_DIR && cd $_
 
 # remove env vars from bashrc
-echo "Removing env vars associated with dzimba.."
-cat ~/.bashrc | awk '$0 !~ /DZIMBA/ {print}' > $TEMP_BASHRC
-truncate -s -2 $TEMP_BASHRC
-cat $TEMP_BASHRC > ~/.bashrc
-source $TEMP_BASHRC
+source ../drop-vars.sh
 
 echo "Takutsvaira.."
 cd ..
-rm -fr $TEMP_DIR
+rm -fr $TEMP_PURGE_DIR
 cd ..

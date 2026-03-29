@@ -35,7 +35,7 @@ if [ -z "${job}" ]; then
 	fi
 
 	echo "Adding cron job.."
-	sh setup-job.sh
+	sh setup-cron.sh
 	
 	cd ..
 fi	
