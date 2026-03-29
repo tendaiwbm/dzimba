@@ -12,13 +12,11 @@ cd $INFRA_DIR
 echo "Purging docker infra.."
 ./remove.sh
 
+# bvisa basa
+./drop-cron.sh
+
 echo "Creating temp directory.."
 mkdir $TEMP_DIR && cd $_
-
-# bvisa basa
-echo "Basa rakubviswa.."
-crontab -l | awk -v container="$DZIMBA_CONTAINER_NAME" '$0 !~ container {print}' > $DZIMBA_CRON_TMP
-crontab $DZIMBA_CRON_TMP
 
 # remove env vars from bashrc
 echo "Removing env vars associated with dzimba.."
