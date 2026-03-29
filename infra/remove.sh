@@ -1,2 +1,2 @@
-docker rm $DZIMBA_CONTAINER_NAME
+docker rm -f $DZIMBA_CONTAINER_NAME
 docker rmi $DZIMBA_IMAGE_NAME
