@@ -53,11 +53,11 @@ cd <directory>
    
    In this file, add the following environment variables (and values):
 ```bash
-   DZIMBA_IMAGE_NAME=<image_name>
-   DZIMBA_CONTAINER_NAME=<container_name>
-   DZIMBA_CRON_TMP=<temporary_crontab_filename>
-   DZIMBA_APP_LOGFILE=<logs_filename>
-   DZIMBA_VARIABLES_INSTALLED=1
+DZIMBA_IMAGE_NAME=<image_name>
+DZIMBA_CONTAINER_NAME=<container_name>
+DZIMBA_CRON_TMP=<temporary_crontab_filename>
+DZIMBA_APP_LOGFILE=<logs_filename>
+DZIMBA_VARIABLES_INSTALLED=1
 ```
 
 5. Run the following command to set up a job that will run periodically (every 5 mins) to search, filter, and send alerts.
