@@ -33,11 +33,11 @@ git clone https://github.com/tendaiwbm/dzimba.git <directory>
 cd <directory>
 ```
 
-3. In the following path:
+3. Create an env file in the following path:
 ```bash
-<directory>/mufambi/.env
+<directory>/mufambi/
 ```
-   add the following environment variables (and values)
+   In this file, add the following environment variables (and values):
    ```bash
    sender_email_address=<ndiani@uyu.com>
    sender_email_password=<password>
@@ -46,7 +46,21 @@ cd <directory>
    smtp_port=<smtp_port_number>
    ```
 
-4. Run the following command to set up a job that will run periodically (every 5 mins) to search, filter, and send alerts.
+4. Create an env file in the following path:
+```bash
+<directory>/infra/
+```
+   
+   In this file, add the following environment variables (and values):
+```bash
+   DZIMBA_IMAGE_NAME=<image_name>
+   DZIMBA_CONTAINER_NAME=<container_name>
+   DZIMBA_CRON_TMP=<temporary_crontab_filename>
+   DZIMBA_APP_LOGFILE=<logs_filename>
+   DZIMBA_VARIABLES_INSTALLED=1
+```
+
+5. Run the following command to set up a job that will run periodically (every 5 mins) to search, filter, and send alerts.
 ```bash
 source dzimba.sh
 ```
