@@ -25,15 +25,17 @@ cd ..
 rm -fr $TEMP_PURGE_DIR
 cd ..
 
-while getopts "p:" flag; do
+drop_project_files=""
+while getopts "r:" flag; do
     case "${flag}" in
-	    p) drop_project_files=$OPTARG ;;
-	    *) drop_project_files="false" ;;
+	    r) drop_project_files="true" ;;
     esac
 done
 
-if [ "$drop_project_files" == "true" ]; then
+if [ ! -z "$drop_project_files" ]; then
 	root_dir=$PWD
 	cd ..
-	yes | rm -r $root_dir
+	yes | rm -rf $root_dir
 fi
+
+drop_project_files=""
