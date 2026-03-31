@@ -24,3 +24,16 @@ echo "Takutsvaira.."
 cd ..
 rm -fr $TEMP_PURGE_DIR
 cd ..
+
+while getopts "p:" flag; do
+    case "${flag}" in
+	    p) drop_project_files=$OPTARG ;;
+	    *) drop_project_files="false" ;;
+    esac
+done
+
+if [ "$drop_project_files" == "true" ]; then
+	root_dir=$PWD
+	cd ..
+	yes | rm -r $root_dir
+fi
