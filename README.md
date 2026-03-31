@@ -74,4 +74,9 @@ Uninstalling the project means removing the cron job that runs the app on the sp
 source uninstall.sh
 ```
 
+To remove the entire project directory during uninstallation, run the previous command with an option and argument as below:
+
+```bash
+source uninstall.sh -p true
+```
 
