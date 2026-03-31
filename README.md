@@ -17,6 +17,8 @@
 <ul>
 	<li>Ubuntu 22.04</li>
 	<li>Docker</li>
+	<li>Email address eg. gmail, yahoo etc</li>
+	<li>App password associated with email address</li>
 </ul>
 
 
