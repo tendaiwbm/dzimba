@@ -51,6 +51,11 @@ cd <directory>
 source dzimba.sh
 ```
 
+<h2>Uninstalling Dzimba</h2>
+Uninstalling the project means removing the cron job that runs the app on the specified schedule, the associated environment variables, and Docker infrastructure. To do so, navigate to the root of the project and run the following command:
 
+```bash
+source uninstall.sh
+```
 
 
