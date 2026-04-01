@@ -9,7 +9,7 @@ cd $INFRA_DIR
 
 # container nemufananidzi ngazviende
 echo "Purging docker infra.."
-./remove.sh
+./remove-docker-infra.sh
 
 # bvisa basa
 ./drop-cron.sh
