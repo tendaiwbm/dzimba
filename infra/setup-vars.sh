@@ -12,14 +12,16 @@ cat ~/.bashrc > $FALLBACK_BASHRC
 
 # replace existing/put in place project variables
 awk '$0 !~ /DZIMBA/{print}' $FALLBACK_BASHRC >> $TEMP_BASHRC
-truncate -s -1 $TEMP_BASHRC
 
-echo -e "\n# DZIMBA vars" >> $TEMP_BASHRC
+if [ ! -z "$(tail -n1 $TEMP_BASHRC)" ]; then
+	echo -e "\n" >> $TEMP_BASHRC
+fi
+
+echo "# DZIMBA" >> $TEMP_BASHRC
 for line in `cat ../.env`;
 do
 	echo "export $line" >> $TEMP_BASHRC 	
 done
-echo -e "\n" >> $TEMP_BASHRC
 
 mv $TEMP_BASHRC ~/.bashrc
 source ~/.bashrc
