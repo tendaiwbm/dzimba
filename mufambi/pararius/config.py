@@ -3,14 +3,24 @@ parariusConfig = {
                    "domain": "https://www.pararius.nl",
                    "endpoint": "huurwoningen",
                    "filters": {
-                                "rentalPrice": { "min": 800, "max": 1500 },
+                                "rentalPrice": { "min": 1000, "max": 1800 },
                                 "datePosted": "sinds-1",
-                                "city": ["Amsterdam","Eindhoven","Tilburg","Den Bosch","Dordrecht","Den Haag","Rotterdam","Utrecht","Hoofddorp"]
+                                "minNumberOfBedrooms": "2-slaapkamers",
+                                "city": ["Haarlem",
+                                         "Amersfoort",
+                                         "Hilversum",
+                                         "Weesp",
+                                         "Utrecht",
+                                         "Delft",
+                                         "Den Bosch",
+                                         "Den Haag",
+                                         "Almere",
+                                         "Utrecht",
+                                         "Lelystad",
+                                         "Leiden",
+                                         "Gouda"]
                               },
                    "responseType": "html",
-                   "requestParams": {
-                                      "page": 1
-                                    },
                    "path": "/app/mufambi/pararius",
                    "localFileName": "pararius.json"
                  }           
