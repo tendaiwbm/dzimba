@@ -4,6 +4,7 @@ RUN apt-get update && \
     pip install numpy && \
     pip install pandas && \
     pip install requests && \
+    pip install curl_cffi && \
     pip install python-dotenv && \
     pip install beautifulsoup4 && \  
     mkdir /app 
