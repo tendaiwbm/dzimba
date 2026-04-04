@@ -1,3 +1,5 @@
+import logging
+
 from mufambi.verra.dig import pipeline as verra
 from mufambi.househunting.dig import pipeline as househunting
 from mufambi.rentanapartmentnl.dig import pipeline as raanl
