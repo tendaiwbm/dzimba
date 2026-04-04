@@ -1,4 +1,5 @@
 import logging
+logging.basicConfig(level=logging.INFO,format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',datefmt='%d/%m/%Y %H:%M:%S')
 
 from mufambi.verra.dig import pipeline as verra
 from mufambi.househunting.dig import pipeline as househunting
@@ -15,7 +16,7 @@ def run():
                 raanl,
                 pararius,
                 rr,
-                liv,
+                #liv,
                 wzk,
               )
     
