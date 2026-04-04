@@ -1,9 +1,8 @@
 import os
 import time
 import random
-import requests as rq
-from curl_cffi.requests import Session
 import pandas as p
+from curl_cffi.requests import Session
 from bs4 import BeautifulSoup as BTSP
 from bs4.element import NavigableString 
 
