@@ -1,5 +1,9 @@
 import time
 import json
+import logging
+
+logger = logging.getLogger("LIVResidential")
+
 import requests as rq
 
 from .model import LIVResidentialModel as model
@@ -42,7 +46,8 @@ def pipeline():
                       "source": source["name"],
                       "hostUrl": source["domain"],
                       "listingUrlColumn": model.itemUrl,
-                      "filter": None
+                      "filter": None,
+                      "logger": logger
                     }
 
     worker = Pipeline(pipelineSetup)

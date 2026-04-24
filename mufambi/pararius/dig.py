@@ -1,6 +1,11 @@
-import os
-import time
-import random
+from os import getenv
+import time,random,logging
+
+from dotenv import load_dotenv
+load_dotenv()
+
+logger = logging.getLogger("Pararius")
+
 import pandas as p
 from curl_cffi.requests import Session
 from bs4 import BeautifulSoup as BTSP
@@ -34,6 +39,8 @@ def html_innertext_to_json(html):
         return
 
 def request(url):
+    
+    logger.info(f"Requesting resource {url}")
     payload = []
     
     session = Session()
@@ -42,20 +49,23 @@ def request(url):
 
     noResultsFoundContainer = dom.find_all(attrs={"class": "no-search-results"})
 
-    if noResultsFoundContainer: 
+    if noResultsFoundContainer:
+        logger.info(f"No results returned by {url}.")
         return payload
 
     try:
         dataContainer = dom.find_all(attrs={"type": "application/ld+json"})
         assert len(dataContainer) == 1
         dom = dataContainer[0]
-    except:
+    except AssertionError as error:
+        logger.error("Failed to locate data in response payload.",exc_info=error)
         return payload
 
     listings = html_innertext_to_json(dom)
     if listings:
         payload = listings
-    
+        logger.info(f"Returned {len(list(payload))} results for {url}.")
+
     time.sleep(2)
    
     return payload
@@ -65,11 +75,15 @@ def parse_response(payload):
     return [listing for subList in listings for listing in subList]
 
 def apply_filters(base_url,filters):
-    assert all(filterGroup in filters for filterGroup in ["city","rentalPrice","datePosted","minNumberOfBedrooms"])
     
+    try:
+        assert all(filterGroup in filters for filterGroup in ["city","rentalPrice","datePosted","minNumberOfBedrooms"])
+    except AssertionError as error:
+        logger.error("Missing filterGroup.",exc_info=error)
+        
     cities = [city.lower().replace(" ","-") for city in filters["city"]]
     filterUrls = map(lambda city: create_path([base_url,city]), cities)
-    
+
     filterUrls = map(lambda url: create_path([url,filters["minNumberOfBedrooms"]]),filterUrls)
 
     priceRange = [str(price) for price in filters["rentalPrice"].values()]
@@ -77,6 +91,8 @@ def apply_filters(base_url,filters):
     filterUrls = map(lambda url: create_path([url,priceRange]),filterUrls)
     
     filterUrls = map(lambda url: create_path([url,filters["datePosted"]]),filterUrls)
+    
+    #logger.info(f"Urls after adding all filters:\n{'\n'.join(list(filterUrls))}")
 
     return list(filterUrls)
 
@@ -86,6 +102,7 @@ def request_geographies(base_url,filters):
     return listings
 
 def pipeline():
+    logger.info(f"{'-'*50} INITIATING PARARIUS SEARCH {'-'*50}")
     pipelineSetup = {
                       "request": {
                                    "function": request_geographies,
@@ -101,7 +118,8 @@ def pipeline():
                       "source": source["name"],
                       "hostUrl": source["domain"],
                       "listingUrlColumn": model.itemUrl,
-                      "filter": None
+                      "filter": None,
+                      "logger": logger
                     }
 
     worker = Pipeline(pipelineSetup)

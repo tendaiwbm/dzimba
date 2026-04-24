@@ -1,4 +1,6 @@
 import os
+import logging
+
 import pandas as p
 
 from .writers import write_json
@@ -15,6 +17,14 @@ class Pipeline:
     def __init__(self,config):
         self.config = config
 
+    def set_logger(self):
+        try:
+            assert "logger" in self.config
+            self.logger = self.config["logger"]
+        except:
+            logging.warning(f"No logger configured for source {self.config['source']}.")
+            self.logger = logging
+        
     def request(self):
         function = self.config["request"]["function"]
         args = self.config["request"]["args"]
@@ -28,31 +38,33 @@ class Pipeline:
         return dict_rows_to_df(validatedData)
 
     def apply_filters(self,data):
-        print(f"Number of listings before filtering:\t{len(data)}")
-        message = "Number of listings after applying a filter on '{}':\t{}"
+        self.logger.info(f"Applying filters on source '{self.config["source"]}'.")
+        self.logger.info(f"Number of listings before filtering:\t{len(data)}")
+
+        message = "Number of listings after applying filter '{}':\t{}"
         filters = self.config["filter"]
         model = self.config["model"]
 
         if "city" in filters:
             data = data[data[model.city].isin(filters["city"])]
-            print(message.format("city",len(data)))
+            self.logger.info(message.format("city",len(data)))
 
         if "isForRental" in filters:
             data = data[data[model.forRental]]
-            print(message.format("isForRental",len(data)))
+            self.logger.info(message.format("isForRental",len(data)))
 
         if "rentalStatusNL" in filters:
             data = data[data[model.status] == filters["rentalStatusNL"]]
-            print(message.format("rentalStatusNL",len(data)))
+            self.logger.info(message.format("rentalStatusNL",len(data)))
 
         if "rentalStatusEN" in filters:
             data = data[data[model.statusEN] == filters["rentalStatusEN"]]
-            print(message.format("rentalStatusEN",len(data)))
+            self.logger.info(message.format("rentalStatusEN",len(data)))
 
         if "rentalPrice" in filters:
             data = data.loc[(data[model.rentalPrice] >= filters["rentalPrice"]["min"]) &
                             (data[model.rentalPrice] <= filters["rentalPrice"]["max"])]
-            print(message.format("rentalPrice",len(data)))
+            self.logger.info(message.format("rentalPrice",len(data)))
 
         if "energyLabel" in filters:
             try:
@@ -60,9 +72,9 @@ class Pipeline:
                 assert all(p.notna(data[model.energyLabel]))
                 data = data[(data[model.energyLabel] == None) | 
                             (data[model.energyLabel].isin(filters["energyLabel"]))]
-                print(message.format("energyLabel",len(data)))
+                self.logger.info(message.format("energyLabel",len(data)))
             except:
-                pass
+                self.logger.info(f"Filtering by energy label failed for source '{self.config["source"]}'")
 
         return data
 
@@ -111,6 +123,8 @@ class Pipeline:
         send_email(self.config["source"],payload)
         
     def execute(self):
+        self.set_logger()
+
         response = self.request()
 
         if not(response): return False
@@ -134,4 +148,4 @@ class Pipeline:
         knownListings = self.update_known_listings(knownListings,newListings)
         self.save_known_listings(knownListings)
         
-        self.email(newListings)
+        #self.email(newListings)

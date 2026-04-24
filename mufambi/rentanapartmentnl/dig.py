@@ -1,4 +1,8 @@
 import time
+import logging
+
+logger = logging.getLogger("RAANL")
+
 import requests as rq
 import pandas as p
 from bs4 import BeautifulSoup as BTSP
@@ -101,7 +105,8 @@ def pipeline():
                       "source": source["name"],
                       "hostUrl": source["domain"],
                       "listingUrlColumn": model.itemUrl,
-                      "filter": source["filters"]
+                      "filter": source["filters"],
+                      "logger": logger
                     }
 
     worker = Pipeline(pipelineSetup)

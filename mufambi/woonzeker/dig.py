@@ -1,3 +1,7 @@
+import logging
+
+logger = logging.getLogger("Woonzeker")
+
 import requests as rq
 
 from .model import WoonzekerModel as model
@@ -38,7 +42,8 @@ def pipeline():
                       "source": source["name"],
                       "hostUrl": source["host"],
                       "listingUrlColumn": model.itemUrl,
-                      "filter": source["filters"]
+                      "filter": source["filters"],
+                      "logger": logger
                     }
 
     worker = Pipeline(pipelineSetup)
