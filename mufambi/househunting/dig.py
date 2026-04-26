@@ -1,5 +1,9 @@
 import os
 import time
+import logging
+
+logger = logging.getLogger("HH")
+
 import requests as rq
 import pandas as p
 
@@ -34,12 +38,17 @@ def request(url,params):
 
     pageFound = True
     payload = []
+    
     while pageFound:
+        logger.info(f"Requesting resource {url} with data {repr(params)}")
         request = rq.post(url,data=params)
+
         response = request.json()
         pageFound = "posts" in response
         
-        if not(pageFound): break
+        if not(pageFound): 
+            logger.info(f"No results returned by {url} and data {repr(params)}")
+            break
 
         payload += response["posts"]
         params["page"] += 1
@@ -62,7 +71,8 @@ def pipeline():
                       "source": source["name"],
                       "hostUrl": source["domain"],
                       "listingUrlColumn": model.itemUrl,
-                      "filter": source["filters"]
+                      "filter": source["filters"],
+                      "logger": logger
                     }
 
     worker = Pipeline(pipelineSetup)

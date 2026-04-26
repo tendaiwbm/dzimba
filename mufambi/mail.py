@@ -16,7 +16,7 @@ Please see the listings below.
 
 {data}
 
-Ciao
+Kind regards
     """
     
     message = MIMEMultipart()

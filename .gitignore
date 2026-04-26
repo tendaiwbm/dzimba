@@ -2,6 +2,9 @@
 **/__pycache__
 **/.idea
 
+# other directories
+**/docs
+
 # configs
 **/.env
 

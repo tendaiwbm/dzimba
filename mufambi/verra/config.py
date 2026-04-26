@@ -5,7 +5,22 @@ verraConfig = {
                  "responseType": "json",
                  "filters": 
                            {
-                             "city": ["Rotterdam","Amsterdam","Dordrecht","Tilburg","Utrecht","Den Haag","The Hague","Hoofddorp","Eindhoven"],
+                             "city": [
+                                       "Utrecht",
+                                       "Den Haag",
+                                       "The Hague",
+                                       "Hoofddorp",
+                                       "Haarlem",
+                                       "Delft",
+                                       "Weesp",
+                                       "Leiden",
+                                       "Gouda",
+                                       "Almere",
+                                       "Lelystad",
+                                       "Hilversum",
+                                       "Amersfoort",
+                                       "Den Bosch"
+                                     ],
                              "energyLabel": ["A++++","A+++","A++","A+","A","B","C"],
                              "isForRental": True,
                              "rentalStatusNL": "Beschikbaar",

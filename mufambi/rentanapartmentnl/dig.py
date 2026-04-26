@@ -1,4 +1,8 @@
 import time
+import logging
+
+logger = logging.getLogger("RAANL")
+
 import requests as rq
 import pandas as p
 from bs4 import BeautifulSoup as BTSP
@@ -58,10 +62,14 @@ def request(url,params):
 
     pageFound = True
     payload = []
+
     while pageFound:
         queryString = "=".join(["skip",str(params["skip"])])
         encodedUrl = "?".join([url,queryString])
+        
+        logger.info(f"Requesting resource {encodedUrl}")
         request = rq.get(encodedUrl)
+        
         response = request.text
         
         dom = BTSP(response,"html.parser")
@@ -69,9 +77,9 @@ def request(url,params):
         try:
             dom = dom.find_all(attrs={"class": ["object_list row"]})[0].find_all("article")
         except:
+            logger.info(f"No results returned by {encodedUrl}")
             pageFound = False
-        
-        if not(pageFound): break
+            break
 
         time.sleep(1)
 
@@ -101,7 +109,8 @@ def pipeline():
                       "source": source["name"],
                       "hostUrl": source["domain"],
                       "listingUrlColumn": model.itemUrl,
-                      "filter": source["filters"]
+                      "filter": source["filters"],
+                      "logger": logger
                     }
 
     worker = Pipeline(pipelineSetup)
